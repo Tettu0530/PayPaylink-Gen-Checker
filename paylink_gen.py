@@ -64,9 +64,9 @@ def check_link(code_i, file):
         if data_p2p["payload"]["orderStatus"] == "PENDING":
             try:
                 amont = data_p2p["payload"]["pendingP2PInfo"]["amount"]
-                print(f"{Color.GREEN}[SUCCESS]https://pay.paypay.ne.jp/{code} Amount:{str(amont)} {Color.RESET}")
+                print(f"{Color.GREEN}[SUCCESS] https://pay.paypay.ne.jp/{code} | Amount:{str(amont)} | {Color.GREEN}RESCODE:{str(get_p2p.status_code)} {Color.RESET}")
             except:
-                print(f"{Color.GREEN}[SUCCESS]https://pay.paypay.ne.jp/{code}{Color.RESET}")
+                print(f"{Color.GREEN}[SUCCESS] https://pay.paypay.ne.jp/{code} | {Color.GREEN}RESCODE:{str(get_p2p.status_code)} {Color.RESET}")
         try:
             with open(f"{file}.txt", "r", encoding="utf-8") as f:
                 content = f.read()
@@ -79,15 +79,15 @@ def check_link(code_i, file):
                     f.write(f"\nhttps://pay.paypay.ne.jp/{code}")
                 return("success")
         else:
-            print(f"{Color.RED}[FAILURE]https://pay.paypay.ne.jp/{code} The URL dos not pending{Color.RESET}")
+            print(f"{Color.RED}[FAILURE] https://pay.paypay.ne.jp/{code} | The URL dos not pending | {Color.GREEN}RESCODE:{str(get_p2p.status_code)} {Color.RESET}")
             return("died")
     except:
-        print(f"{Color.RED}[FAILURE]https://pay.paypay.ne.jp/{code} The URL does not exist{Color.RESET}")
+        print(f"{Color.RED}[FAILURE] https://pay.paypay.ne.jp/{code} | {Color.YELLOW}The URL does not exist | {Color.GREEN}RESCODE:{str(get_p2p.status_code)} {Color.RESET}")
         return("died")
 
 
 os.system("cls")
-os.system("title PayPayLinkGenerator-Checker Made by Tettu0530#0530")
+os.system("title PayPayLinkGenerator-Checker Made by Tettu0530#0530-TuVoNeX#2214")
 
 print(Color.BLUE + f"""  _____            _____            _      _       _                
  |  __ \          |  __ \          | |    (_)     | |               
@@ -103,34 +103,46 @@ print(Color.BLUE + f"""  _____            _____            _      _       _
  | |__| |  __| | | | | (_>  < | |____| | | |  __| (__|   |  __| |   
   \_____|\___|_| |_|  \___/\/  \_____|_| |_|\___|\___|_|\_\___|_|  
 
-{Color.RESET}Author:{Color.RED}Tettu0530#0530{Color.RESET}
-Version:{Color.RED}1.1.0{Color.RESET}
+{Color.RESET}---------- Author:{Color.RED}Tettu0530#0530&TuVoNeX#2214{Color.RESET} ---------
+-------------------- Version:{Color.RED}1.1.0{Color.RESET} --------------------
 """)
 
-amont = input("How many links do you want to generate?:")
-yesno = input("Do you want to check the PayPay link?(Y/N):")
-print(f"Ganarating {str(amont)} of PayPay links...")
+amount = input(f"{Color.CYAN}How many links do you want to generate?:{Color.RESET}")
+delay_gen = input(f"{Color.CYAN}Please input delay of generating urls. (0.001 is recommended.):{Color.RESET}")
+yesno = input(f"{Color.CYAN}Do you want to check the PayPay link?(Y/N):{Color.RESET}")
+print(f"Ganarating {str(amount)} of PayPay links...")
 
 li = []
-for i in range(int(amont)):
+success = 0
+failure = 0
+total = 0
+
+for i in range(int(amount)):
     link_i = rand_gen(16)
     link = "https://pay.paypay.ne.jp/" + link_i
     li.append(link)
     print(f"Successfully generated link : {link}")
+    time.sleep(float(delay_gen))
 with open(f"paylink.txt", "w", encoding="utf-8") as f:
     for i_ in li:
         f.write(f"{i_}\n")
 
 if yesno == "Y" or yesno == "y":
-    delay = input("Please input delay (3 seconds is recommended.):")
+    delay = input("Please input delay. (3 seconds is recommended.):")
     with open(f"paylink.txt", "r") as f:
         l = f.read().split("\n")
         paylink = ([i for i in l if i != ""])
         for i in paylink:
-            check_link(i, "success_link.txt")
+            result = check_link(i, "success_link.txt")
             time.sleep(int(delay))
+            if result == "success":
+                success += 1
+            elif result == "died":
+                failure += 1
         print(f"""
-Successfully checked {len(l)} URL.
+{Color.UNDERLINE}Successfully checked {str(success + failure)} URL.{Color.RESET}
+{Color.GREEN}[SUCCESS] Total : {str(success)} URLS{Color.RESET}
+{Color.RED}[FAILURE] Total : {str(failure)} URLS{Color.RESET}
         """)
         os.system("PAUSE")
 else:
