@@ -8,4 +8,5 @@
   - 任意の数生成可能
   - threadingによる並列化でさらに高速化可能(お使いのCPUの性能に依存します)
 - PayPayLink Checker
-  - 最大15Links/sで確認可能 **Proxyを使っていないため超高確率でPayPayにアクセス禁止されます**
+  - 最大100Links/sで確認可能
+  - Proxy(HTTP, HTTPS)を通じてアクセスすることでより安全にチェックできます。
